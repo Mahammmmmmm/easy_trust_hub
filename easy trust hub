@@ -1,0 +1,116 @@
+git init
+git add .
+git commit -m "Initial commit for EasyTrustHub app"
+
+git remote add origin https://github.com/yourusername/easytrusthub.git
+
+git push -u origin main
+
+# EasyTrustHub
+
+EasyTrustHub is a banking app designed for older adults, focusing on user-friendly interfaces and features that promote financial literacy and security.
+
+## Features
+
+- Simplified interface with large icons and text.
+- Voice navigation for easy interaction.
+- Personalized dashboard for account management.
+- Real-time fraud alerts and educational resources.
+- Emergency contact feature for quick support.
+- Community engagement and local workshop information.
+
+## Getting Started
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Mahammmmmmm/easy_trust_hub.git
+
+cd easytrusthub
+
+flutter pub get
+
+flutter run
+
+import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+
+void main() {
+  runApp(EasyTrustHub());
+}
+
+class EasyTrustHub extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'EasyTrustHub',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        textTheme: TextTheme(
+          bodyText1: TextStyle(fontSize: 24),
+          button: TextStyle(fontSize: 20),
+        ),
+      ),
+      home: Dashboard(),
+    );
+  }
+}
+
+class Dashboard extends StatefulWidget {
+  @override
+  _DashboardState createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  final SpeechToText _speech = SpeechToText();
+  bool _isListening = false;
+  String _lastWords = "";
+
+  void _toggleListening() async {
+    if (_isListening) {
+      _isListening = false;
+      await _speech.stop();
+    } else {
+      _isListening = true;
+      bool available = await _speech.initialize();
+      if (available) {
+        _speech.listen(onResult: (result) {
+          setState(() {
+            _lastWords = result.recognizedWords;
+            // Handle voice commands here
+          });
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('EasyTrustHub Dashboard'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Voice Command: $_lastWords'),
+            ElevatedButton(
+              onPressed: _toggleListening,
+              child: Text(_isListening ? 'Stop Listening' : 'Start Listening'),
+            ),
+            // Add daily summary, alerts, and more here
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Emergency Help Button logic here
+        },
+        tooltip: 'Emergency Help',
+        child: Icon(Icons.warning),
+      ),
+    );
+  }
+}
+
+### Conclusion
